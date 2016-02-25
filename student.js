@@ -176,6 +176,18 @@ var parseYear = function(p) {
 // year, month, day, hour, minute, second
 // use parseInt and substr:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substr
+
+var parseDate = function(d) {
+    return {
+        year: parseInt(d.substr(0,4), 10),
+        month: parseInt(d.substr(5,2), 10),
+        day: parseInt(d.substr(8,2), 10),
+        hour: parseInt(d.substr(11,2), 10),
+        minute: parseInt(d.substr(14,2), 10),
+        second: parseInt(d.substr(17,2), 10),
+    };
+};
+
 // inSubject
 // Input: a String and an Email, in the same format as hasTag
 // Output: true or false
@@ -183,19 +195,74 @@ var parseYear = function(p) {
 // use .includes
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
 
+var inSubject = function(a,b) {
+    if (b.subject.includes(a)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
 // filterBySubject
 // Input: a String and a list of Emails
 // Output: a list of Emails
 // return a list of the emails that have the first email in their subject
 // use inSubject
 
+var filterBySubject = function(a,b) {
+    var e = 0;
+    var L = [];
+    while (e < b.length) {
+        if (inSubject(a,b[e])) {
+            L.push(b[e]);
+        }
+        e++;
+    }
+    return L;
+};
+
 // inBody
 // Input: a String and an Email, in the same format as hasTag
 // Output: true or false
 // return true if the first input is part of the 'body' field of the Email
+
+var inBody = function(a,b) {
+    if (b.body.includes(a)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
 
 // filterByBody
 // Input: a String and a list of Emails
 // Output: a list of Emails
 // return a list of the emails that have the first email in their body
 // use inBody
+
+var filterByBody = function(a,b) {
+    var e = 0;
+    var L = [];
+    while (e < b.length) {
+        if (inBody(a,b[e])) {
+            L.push(b[e]);
+        }
+        e++;
+    }
+    return L;
+};
+
+
+$(document).ready(function() {
+
+    var i = 1;
+    while (i < emails.length) {
+        console.log(i);
+        $("ol").append(
+            "<li>" + "<input type='checkbox'>" + "</input>" + emails[i].sender.name + "<span class='date'>" + emails[i].date.month + "/" + emails[i].date.day + "/" + emails[i].date.year + "</span>" + "<blockquote class='subject'>" + emails[i].subject + "</blockquote>" + "</li>"
+        );
+        i = i + 1;
+    }
+});
